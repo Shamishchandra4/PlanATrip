@@ -5,7 +5,7 @@ import { Input } from "../components/ui/input"
 import { Button } from "../components/ui/button";
 import { toast } from "sonner";
 import { apiClient } from "@/lib/api-client";
-import { LOGIN_ROUTE, SIGNUP_ROUTE } from "@/utils/constants";
+import { LOGIN_ROUTE, SIGNUP_ROUTE} from "@/utils/constants";
 import { useNavigate } from "react-router-dom";
 
 const Auth = () => {
@@ -43,20 +43,20 @@ const Auth = () => {
     const handleLogin = async () => {
         if (validatelogin()) {
             try {
-                const response = await apiClient.post(LOGIN_ROUTE, { email, password });
+                const response = await apiClient.post(LOGIN_ROUTE, { username:email, password });
                 console.log(response);
                 toast.success("login successful!");
                 
                 if(response.status===200){
                     toast.success("Login successful!");
-                    localStorage.setItem('username',response.username)
-                    localStorage.setItem('jwt',response.jwt)
-                    localStorage.setItem('name',response.name)
-                    localStorage.setItem('homeTown',response.homeTown)
-                    localStorage.setItem('currentTown',response.currentTown)
-                    localStorage.setItem('likes',response.likes)
-                    localStorage.setItem('nature',response.nature)
-                    localStorage.setItem('frequency',response.frequency)
+                    localStorage.setItem('username',response.data.username)
+                    localStorage.setItem('jwt',response.data.jwt)
+                    localStorage.setItem('name',response.data.name)
+                    localStorage.setItem('homeTown',response.data.homeTown)
+                    localStorage.setItem('currentTown',response.data.currentTown)
+                    localStorage.setItem('likes',response.data.likes)
+                    localStorage.setItem('nature',response.data.nature)
+                    localStorage.setItem('frequency',response.data.frequency)
                     navigate("/dashboard")
                 }
                 if(response.status!=200){
@@ -74,7 +74,8 @@ const Auth = () => {
     const handleSignup = async () => {
         if (validateSignup()) {
             try {
-                const response = await apiClient.post(SIGNUP_ROUTE, { email, password });
+
+                const response = await apiClient.post(SIGNUP_ROUTE, { username:email, password });
                 console.log(response);
 
                 if(response.status===200){

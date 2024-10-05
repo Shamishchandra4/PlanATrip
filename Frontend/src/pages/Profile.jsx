@@ -62,33 +62,27 @@ const Profile = () => {
             [name]: value,
         }));
     };
-    
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const formDataToSend = new FormData();
-        formDataToSend.append('name', formData.fullName);
-        formDataToSend.append('username', formData.username);
-        formDataToSend.append('hometown', formData.hometown);
-        formDataToSend.append('currentTown', formData.currentLocation);
-
-        if (favoriteTravelType) {
-            formDataToSend.append('nature', favoriteTravelType);
-        }
-
-        if (travelFrequency) {
-            formDataToSend.append('frequency', travelFrequency);
-        }
+        
+        // Construct the JSON payload based on the formData
+        const payload = {
+            name: formData.fullName,
+            username: formData.username,
+            homeTown: formData.hometown,
+            currentTown: formData.currentLocation,
+            nature: favoriteTravelType || undefined, // only include if value is selected
+            frequency: travelFrequency || undefined // only include if value is selected
+        };
 
         try {
-            const response = await apiClient.post(SET_PROFILE, formDataToSend, {
-                withCredentials: true,
-                headers: {}
-            });
+            const response = await apiClient.post(SET_PROFILE, payload);
             if (response.status === 200) {
                 toast.success("Profile setup successful!");
                 navigate("/auth");
             } else {
-                toast.success("Profile setup unsuccessful!");
+                toast.error("Profile setup unsuccessful!");
                 navigate("/profile");
             }
         } catch (error) {
@@ -152,8 +146,6 @@ const Profile = () => {
                             placeholder="Current City"
                         />
                     </div>
-
-                    
 
                     <div className="space-y-2">
                         <label className="block text-sm text-gray-400">Favorite Travel Type</label>

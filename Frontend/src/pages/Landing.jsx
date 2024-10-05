@@ -1,8 +1,13 @@
 import React from 'react';
 import starrySky from '../assets/bg.jpg'; // Adjust this path to your image
+import { useNavigate } from 'react-router-dom';
 
 
 const Landing = () => {
+  const navigate=useNavigate()
+  const handleJoin=()=>{
+    navigate('/auth')
+  }
   return (
     <div className="relative h-screen flex items-center justify-center text-center">
 
@@ -28,6 +33,7 @@ const Landing = () => {
         <p className="text-xl text-gray-200 mb-6">
           Discover. Connect. Travel Smarter.
         </p>
+        <button onClick={handleJoin}>Join Us</button>
 
 
       </div>
