@@ -16,9 +16,6 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover";
 import { apiClient } from '@/lib/api-client';
-import { toast, Toaster } from "sonner";
-import { SET_PROFILE } from '@/utils/constants';
-import { useNavigate } from 'react-router-dom';
 
 const frameworks = [
     { value: "adventure", label: "Adventure" },
@@ -41,14 +38,17 @@ const travelFrequencies = [
     { value: "once_a_year", label: "Once a Year Traveler" }
 ];
 
+import { toast, Toaster } from "sonner";
+import { SET_PROFILE } from '@/utils/constants';
+import { useNavigate } from 'react-router-dom'
+
 const Profile = () => {
-    const navigate = useNavigate();
+    const navigate = useNavigate()
     const [formData, setFormData] = useState({
         fullName: '',
         username: '',
         hometown: '',
         currentLocation: '',
-        profilePicture: null,
     });
     const [travelTypeOpen, setTravelTypeOpen] = useState(false);
     const [favoriteTravelType, setFavoriteTravelType] = useState("");
@@ -62,14 +62,7 @@ const Profile = () => {
             [name]: value,
         }));
     };
-
-    const handleFileChange = (e) => {
-        setFormData((prevData) => ({
-            ...prevData,
-            profilePicture: e.target.files[0],
-        }));
-    };
-
+    
     const handleSubmit = async (e) => {
         e.preventDefault();
         const formDataToSend = new FormData();
@@ -105,83 +98,72 @@ const Profile = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gray-900 flex justify-center items-center p-6">
-            <div className="bg-white bg-opacity-90 p-8 rounded-lg shadow-xl w-full max-w-2xl border border-gray-300">
-                <h2 className="text-4xl font-bold text-center text-gray-800 mb-6">
+        <div className="min-h-screen bg-gradient-to-b from-black to-gray-700 flex justify-center items-center p-6">
+            <div className="bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-2xl">
+                <h2 className="text-3xl font-semibold text-white mb-6 text-center">
                     Profile Information
                 </h2>
 
                 <form onSubmit={handleSubmit} className="space-y-6">
                     <div className="space-y-2">
-                        <label className="block text-sm text-gray-800">Full Name</label>
+                        <label className="block text-sm text-gray-400">Full Name</label>
                         <input
                             type="text"
                             name="fullName"
                             value={formData.fullName}
                             onChange={handleChange}
-                            className="w-full p-3 rounded-md border border-gray-300 focus:ring-2 focus:ring-gray-500"
+                            className="w-full p-3 rounded-md border border-gray-600 bg-gray-900 text-white placeholder-gray-500 focus:ring-2 focus:ring-blue-500"
                             placeholder="John Doe"
-                            required
                         />
                     </div>
 
                     <div className="space-y-2">
-                        <label className="block text-sm text-gray-800">Username</label>
+                        <label className="block text-sm text-gray-400">Username</label>
                         <input
                             type="text"
                             name="username"
                             value={formData.username}
                             onChange={handleChange}
-                            className="w-full p-3 rounded-md border border-gray-300 focus:ring-2 focus:ring-gray-500"
+                            className="w-full p-3 rounded-md border border-gray-600 bg-gray-900 text-white placeholder-gray-500 focus:ring-2 focus:ring-blue-500"
                             placeholder="abc@123"
-                            required
                         />
                     </div>
 
                     <div className="space-y-2">
-                        <label className="block text-sm text-gray-800">Hometown</label>
+                        <label className="block text-sm text-gray-400">Hometown</label>
                         <input
                             type="text"
                             name="hometown"
                             value={formData.hometown}
                             onChange={handleChange}
-                            className="w-full p-3 rounded-md border border-gray-300 focus:ring-2 focus:ring-gray-500"
+                            className="w-full p-3 rounded-md border border-gray-600 bg-gray-900 text-white placeholder-gray-500 focus:ring-2 focus:ring-blue-500"
                             placeholder="Your Hometown"
-                            required
                         />
                     </div>
 
                     <div className="space-y-2">
-                        <label className="block text-sm text-gray-800">Current Location</label>
+                        <label className="block text-sm text-gray-400">Current Location</label>
                         <input
                             type="text"
                             name="currentLocation"
                             value={formData.currentLocation}
                             onChange={handleChange}
-                            className="w-full p-3 rounded-md border border-gray-300 focus:ring-2 focus:ring-gray-500"
+                            className="w-full p-3 rounded-md border border-gray-600 bg-gray-900 text-white placeholder-gray-500 focus:ring-2 focus:ring-blue-500"
                             placeholder="Current City"
-                            required
                         />
                     </div>
 
-                    <div className="space-y-2">
-                        <label className="block text-sm text-gray-800">Profile Picture</label>
-                        <input
-                            type="file"
-                            onChange={handleFileChange}
-                            className="w-full p-3 rounded-md border border-gray-300 focus:ring-2 focus:ring-gray-500"
-                        />
-                    </div>
+                    
 
                     <div className="space-y-2">
-                        <label className="block text-sm text-gray-800">Favorite Travel Type</label>
+                        <label className="block text-sm text-gray-400">Favorite Travel Type</label>
                         <Popover open={travelTypeOpen} onOpenChange={setTravelTypeOpen}>
                             <PopoverTrigger asChild>
                                 <Button
                                     variant="outline"
                                     role="combobox"
                                     aria-expanded={travelTypeOpen}
-                                    className="w-full justify-between border border-gray-300 bg-white text-gray-800 hover:border-gray-600 focus:ring-2 focus:ring-gray-500"
+                                    className="w-full justify-between bg-gray-900 text-white border-gray-600 hover:border-blue-500 focus:ring-2 focus:ring-blue-500"
                                 >
                                     {favoriteTravelType
                                         ? frameworks.find((fw) => fw.value === favoriteTravelType)?.label
@@ -189,7 +171,7 @@ const Profile = () => {
                                     <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                                 </Button>
                             </PopoverTrigger>
-                            <PopoverContent className="w-full bg-white shadow-lg rounded-md">
+                            <PopoverContent className="w-full bg-gray-800 p-0">
                                 <Command>
                                     <CommandInput placeholder="Search Travel Type..." className="h-9" />
                                     <CommandList>
@@ -221,14 +203,14 @@ const Profile = () => {
                     </div>
 
                     <div className="space-y-2">
-                        <label className="block text-sm text-gray-800">Travel Frequency</label>
+                        <label className="block text-sm text-gray-400">Travel Frequency</label>
                         <Popover open={frequencyOpen} onOpenChange={setFrequencyOpen}>
                             <PopoverTrigger asChild>
                                 <Button
                                     variant="outline"
                                     role="combobox"
                                     aria-expanded={frequencyOpen}
-                                    className="w-full justify-between border border-gray-300 bg-white text-gray-800 hover:border-gray-600 focus:ring-2 focus:ring-gray-500"
+                                    className="w-full justify-between bg-gray-900 text-white border-gray-600 hover:border-blue-500 focus:ring-2 focus:ring-blue-500"
                                 >
                                     {travelFrequency
                                         ? travelFrequencies.find((tf) => tf.value === travelFrequency)?.label
@@ -236,7 +218,7 @@ const Profile = () => {
                                     <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                                 </Button>
                             </PopoverTrigger>
-                            <PopoverContent className="w-full bg-white shadow-lg rounded-md">
+                            <PopoverContent className="w-full bg-gray-800 p-0">
                                 <Command>
                                     <CommandInput placeholder="Search Travel Frequency..." className="h-9" />
                                     <CommandList>
@@ -267,15 +249,17 @@ const Profile = () => {
                         </Popover>
                     </div>
 
-                    <button
-                        type="submit"
-                        className="w-full py-3 rounded-md bg-gray-800 text-white hover:bg-gray-700 focus:ring-2 focus:ring-gray-500"
-                    >
-                        Set Up Profile
-                    </button>
+                    <div className="flex justify-center">
+                        <Button
+                            type="submit"
+                            className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 rounded-md focus:ring-2 focus:ring-blue-500"
+                        >
+                            Save Profile
+                        </Button>
+                    </div>
                 </form>
-                <Toaster position="top-center" />
             </div>
+            <Toaster />
         </div>
     );
 };
