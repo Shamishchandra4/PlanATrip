@@ -1,72 +1,76 @@
-// import React, { useEffect, useState } from 'react';
-// import SockJS from 'sockjs-client';
-// import Stomp from 'stompjs';
-// import { useParams } from 'react-router-dom';
-// import { toast } from 'react-toastify';
+import React, { useEffect, useState } from 'react';
+import SockJS from 'sockjs-client';
+import Stomp from 'stompjs';
+import { useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { apiClient } from '../lib/api-client';
 
-// let stompClient = null;
-// const ChatRoom = () => {
-//   const { roomId } = useParams(); 
-//   const [messages, setMessages] = useState([]);
+let stompClient = null;
+const ChatRoom = () => {
+  const roomId = useParams().roomId; 
+  const [messages, setMessages] = useState([]);
 
-//   useEffect(() => {
-//     const connectToWebSocket = () => {
-//       const socket = new SockJS('/ws'); 
-//       stompClient = Stomp.over(socket);
+  useEffect(() => {
+    const fetchOldMessages = async () => {
+      try {
+        const response = await apiClient.get(`/chats/${roomId}`, {
+          headers: {
+            authorization: 'Bearer ' + localStorage.getItem('jwt')
+          }
+        });
+        setMessages(response.data); 
+      } catch (error) {
+        console.error("Error fetching old messages:", error);
+        toast.error("Failed to load old messages.");
+      }
+    };
 
-//       stompClient.connect({}, (frame) => {
-//         console.log('Connected: ' + frame);
+    const connectToWebSocket = () => {
+      const socket = new SockJS('/ws');
+      stompClient = Stomp.over(socket);
 
-//         stompClient.subscribe(`/topic/public/${roomId}`, (messageOutput) => {
-//           const message = JSON.parse(messageOutput.body).msg;
-//           setMessages((prevMessages) => [...prevMessages, message]);
-//         });
+      stompClient.connect({}, (frame) => {
+        console.log('Connected: ' + frame);
 
-//         toast.success(`Connected to room: ${roomId}`);
-//       }, (error) => {
-//         console.error('Error connecting to WebSocket:', error);
-//         toast.error('Failed to connect to chat room.');
-//       });
-//     };
+        stompClient.subscribe(`/topic/public/${roomId}`, (messageOutput) => {
+          const newMessage = JSON.parse(messageOutput.body);
+          setMessages((prevMessages) => [...prevMessages, newMessage]);
+        });
 
-//     connectToWebSocket();
+        toast.success(`Connected to room: ${roomId}`);
+      }, (error) => {
+        console.error('Error connecting to WebSocket:', error);
+        toast.error('Failed to connect to chat room.');
+      });
+    };
 
-//     return () => {
-//       if (stompClient) {
-//         stompClient.disconnect();
-//       }
-//     };
-//   }, [roomId]);
+    fetchOldMessages(); 
+    connectToWebSocket();
 
-//   return (
-//     <div className="p-6 bg-[#151518] min-h-screen text-white">
-//       <h1 className="text-3xl font-bold mb-6">Chat Room: {roomId}</h1>
+    return () => {
+      if (stompClient) {
+        stompClient.disconnect();
+      }
+    };
+  }, [roomId]);
 
-//       {/* Display chat messages */}
-//       <div className="mb-6">
-//         {messages.length > 0 ? (
-//           messages.map((message, index) => (
-//             <div key={index} className="bg-[#202123] p-3 rounded-lg mb-2">
-//               {message}
-//             </div>
-//           ))
-//         ) : (
-//           <p className="text-gray-400">No messages yet.</p>
-//         )}
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default ChatRoom;
-// import React from 'react'
-
-const Chatroom = () => {
   return (
-    <div>
-      hello
-    </div>
-  )
-}
+    <div className="p-6 bg-[#151518] min-h-screen text-white">
+      <h1 className="text-3xl font-bold mb-6">Chat Room: {roomId}</h1>
 
-export default Chatroom
+      <div className="mb-6">
+        {messages.length > 0 ? (
+          messages.map((message, index) => (
+            <div key={index} className="bg-[#202123] p-3 rounded-lg mb-2">
+              <strong>{message.username}: </strong>{message.msg}
+            </div>
+          ))
+        ) : (
+          <p className="text-gray-400">No messages yet.</p>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default ChatRoom;

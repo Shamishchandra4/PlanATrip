@@ -8,7 +8,8 @@ import Dashboard from './pages/Dashboard'
 import ItineraryResponse from './pages/ItineraryResponse'
 import ExploreChatRooms from './pages/ExploreChatRooms'
 import Chatrooms from './pages/Chatroom'
-
+import CreateChatRoom from './pages/CreateChatRoom'
+{window.global = window;}
 
 function App() {
 
@@ -23,6 +24,7 @@ function App() {
           <Route path='/itinerary-response' element={<ItineraryResponse/>} />
           <Route path='/chat-room' element={<Chatrooms/>} />
           <Route path='/explore-chat-rooms' element={<ExploreChatRooms/>} />
+          <Route path='/create-chat-room' element={<CreateChatRoom/>} />
 
           <Route path='*' element={<Navigate to="/auth" />} />
 

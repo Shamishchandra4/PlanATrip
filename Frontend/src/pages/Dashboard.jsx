@@ -74,7 +74,9 @@ const Dashboard = () => {
             localGuideImage: SC,
         },
     ];
-  
+    const handleCreate=()=>{
+        navigate("/create-chat-room")
+    }
     const handleInputChange = (e) => {
         const { id, value } = e.target;
         setItineraryData((prevData) => ({
@@ -82,14 +84,14 @@ const Dashboard = () => {
             [id]: value,
         }));
     };
-
+    let User=localStorage.getItem("name")
 
 
     return (
         <div className="min-h-screen poppins-medium bg-[#151518] text-[#EDEDEE]  font-poppins">
-            <header className="bg-[#09090B] px-6 py-4 flex justify-between items-center">
+            <header className="bg-[#294770] px-6 py-4 flex justify-between items-center">
                 <div className="text-3xl font-bold poppins-semibold  ">
-                    <Link to="/">TravelEazy</Link>
+                    <Link to="/">Plan A Trip</Link>
                 </div>
 
                 <div className="flex-grow mx-4">
@@ -115,7 +117,7 @@ const Dashboard = () => {
 
             <main className="p-8">
                 <section className="mb-8 poppins-semibold ">
-                    <h1 className="text-3xl font-bold text-white">Welcome  [User]!</h1>
+                    <h1 className="text-3xl font-bold text-white">Welcome  {User}!</h1>
                     <p className="text-gray-400">Here's your travel dashboard overview:</p>
                 </section>
 
@@ -133,6 +135,9 @@ const Dashboard = () => {
                             ))}
                         </div>
                         <Link to="/explore-chat-rooms" className="text-blue-500 hover:underline mt-4 block">Explore More Chat Rooms</Link>
+                        <button onClick={handleCreate} className="bg-white text-black mt-10 font-bold py-3 px-6 rounded-lg hover:bg-gray-400 transition">
+                                Create a chat room
+                            </button>
                     </div>
 
 
@@ -157,6 +162,7 @@ const Dashboard = () => {
                         </div>
 
                         <Link to="/local-experiences" className="text-blue-500 hover:underline mt-6 block">Explore More Experiences</Link>
+                        
                     </div>
 
 

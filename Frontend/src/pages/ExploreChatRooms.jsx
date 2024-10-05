@@ -1,28 +1,42 @@
 import React, { useState, useEffect } from 'react';
-import { apiClient } from '../lib/api-client'; // Assuming the apiClient is set up to make API requests
-import { toast } from 'react-toastify'; // Assuming you are using 'react-toastify' for notifications
+import { apiClient } from '../lib/api-client';
+import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 
 const ExploreChatRooms = () => {
   const navigate = useNavigate();
+  const jwt = localStorage.getItem('jwt')
   const [chatRooms, setChatRooms] = useState([
-    // Simulated data (for development purposes)
-    { id: 1, name: 'Goa Travel Enthusiasts', description: 'Discuss your trips to Goa' },
-    { id: 2, name: 'Kerala Beach Lovers', description: 'All about beaches and relaxing vacations' },
-    { id: 3, name: 'Himachal Adventure Seekers', description: 'Connect with thrill-seekers' },
-    { id: 4, name: 'Banglore City Life Explorers', description: 'Explore the best of city life' },
-    { id: 5, name: 'Hyderabad Foodies Unite', description: 'Chat about the best cuisines and food places' },
+    {
+      chatId: 3,
+      chatroomTitle: 'Planning for Goa',
+      chatroomDesc: 'I want help with planning my trip to Goa',
+      location: 'Goa',
+      likes: 0
+    },
+    {
+      chatId: 4,
+      chatroomTitle: 'Planning for Mumbai',
+      chatroomDesc: 'I want help with planning my trip to Mumbai',
+      location: 'Mumbai',
+      likes: 0
+    }
   ]);
   const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     const fetchChatRooms = async () => {
       try {
-        const response = await apiClient.get('/chat-rooms');
+        const response = await apiClient.get('/all-chats', {
+          headers: {
+            authorization: 'Bearer ' + localStorage.getItem('jwt')
+          }
+        }
+        );
         setChatRooms(response.data);
       } catch (error) {
         console.error('Error fetching chat rooms:', error);
-        toast.error("Failed to load chat rooms."); // Toast notification for error
+        toast.error('Failed to load chat rooms.');
       }
     };
 
@@ -31,16 +45,17 @@ const ExploreChatRooms = () => {
 
   // Function to handle joining a chat room
   const handleJoinRoom = (roomId) => {
+    localStorage.setItem("roomId", roomId)
     // Navigate to the dynamic chat room page with the roomId
-    navigate(`/chat-room/${roomId}`);
+    navigate(`/chat-room`);
   };
 
   const filteredChatRooms = chatRooms.filter(room =>
-    room.name.toLowerCase().includes(searchQuery.toLowerCase())
+    room.chatroomTitle.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
-    <div className="p-6 bg-[#151518] min-h-screen text-white">
+    <div className="p-6 bg-[#000000] min-h-screen text-white">
       <h1 className="text-3xl font-bold mb-6 poppins-semibold">Explore Chat Rooms</h1>
 
       {/* Search Bar */}
@@ -58,12 +73,12 @@ const ExploreChatRooms = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 poppins-semibold">
         {filteredChatRooms.length > 0 ? (
           filteredChatRooms.map(room => (
-            <div key={room.id} className="bg-[#202123] p-4 rounded-lg shadow-lg">
-              <h2 className="text-xl font-semibold">{room.name}</h2>
-              <p className="text-gray-400 mb-4">{room.description}</p>
+            <div key={room.chatId} className="bg-[#626469] p-4 rounded-lg shadow-lg">
+              <h2 className="text-xl font-semibold">{room.chatroomTitle}</h2>
+              <p className="text-gray-100 mb-4">{room.chatroomDesc}</p>
               <button
                 className="px-4 py-2 bg-white text-black rounded-lg hover:bg-gray-400 transition"
-                onClick={() => handleJoinRoom(room.id)}
+                onClick={() => handleJoinRoom(room.chatId)}
               >
                 Join Room
               </button>

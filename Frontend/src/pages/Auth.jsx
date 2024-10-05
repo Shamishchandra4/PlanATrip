@@ -3,15 +3,13 @@ import { useState } from "react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "../components/ui/tabs"
 import { Input } from "../components/ui/input"
 import { Button } from "../components/ui/button";
-import { toast, Toaster } from "sonner";
+import { toast } from "sonner";
 import { apiClient } from "@/lib/api-client";
 import { LOGIN_ROUTE, SIGNUP_ROUTE } from "@/utils/constants";
 import { useNavigate } from "react-router-dom";
-import { useAppStore } from "@/store";
 
 const Auth = () => {
     const navigate=useNavigate()
-    const { setUserInfo } = useAppStore();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
@@ -45,7 +43,7 @@ const Auth = () => {
     const handleLogin = async () => {
         if (validatelogin()) {
             try {
-                const response = await apiClient.post(LOGIN_ROUTE, { email, password }, { withCredentials: true });
+                const response = await apiClient.post(LOGIN_ROUTE, { email, password });
                 console.log(response);
                 toast.success("login successful!");
                 
@@ -76,7 +74,7 @@ const Auth = () => {
     const handleSignup = async () => {
         if (validateSignup()) {
             try {
-                const response = await apiClient.post(SIGNUP_ROUTE, { email, password }, { withCredentials: true });
+                const response = await apiClient.post(SIGNUP_ROUTE, { email, password });
                 console.log(response);
 
                 if(response.status===200){
