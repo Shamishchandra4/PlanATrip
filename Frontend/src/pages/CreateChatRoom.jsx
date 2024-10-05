@@ -17,7 +17,7 @@ const CreateChatRoom = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post('/create-chat', { username:username, chatroomTitle:chatroomTitle, chatroomDesc:chatroomDesc, location: roomDestination }, {
+      const response = await axios.post('http:localhost:8080/create-chat', { username:username, chatroomTitle:chatroomTitle, chatroomDesc:chatroomDesc, location: roomDestination }, {
         headers: {
           authorization: 'Bearer ' + localStorage.getItem('jwt')
         }
