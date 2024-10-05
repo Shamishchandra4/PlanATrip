@@ -48,7 +48,6 @@ const Profile = () => {
         username: '',
         hometown: '',
         currentLocation: '',
-        profilePicture: null,
     });
     const [travelTypeOpen, setTravelTypeOpen] = useState(false);
     const [favoriteTravelType, setFavoriteTravelType] = useState("");
@@ -63,39 +62,26 @@ const Profile = () => {
         }));
     };
 
-    const handleFileChange = (e) => {
-        setFormData((prevData) => ({
-            ...prevData,
-            profilePicture: e.target.files[0],
-        }));
-    };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const formDataToSend = new FormData();
-        formDataToSend.append('name', formData.fullName);
-        formDataToSend.append('username', formData.username);
-        formDataToSend.append('hometown', formData.hometown);
-        formDataToSend.append('currentTown', formData.currentLocation);
-
-        if (favoriteTravelType) {
-            formDataToSend.append('nature', favoriteTravelType);
-        }
-
-        if (travelFrequency) {
-            formDataToSend.append('frequency', travelFrequency);
-        }
+        
+        // Construct the JSON payload based on the formData
+        const payload = {
+            name: formData.fullName,
+            username: formData.username,
+            homeTown: formData.hometown,
+            currentTown: formData.currentLocation,
+            nature: favoriteTravelType || undefined, // only include if value is selected
+            frequency: travelFrequency || undefined // only include if value is selected
+        };
 
         try {
-            const response = await apiClient.post(SET_PROFILE, formDataToSend, {
-                withCredentials: true,
-                headers: {}
-            });
+            const response = await apiClient.post(SET_PROFILE, payload);
             if (response.status === 200) {
                 toast.success("Profile setup successful!");
                 navigate("/auth");
             } else {
-                toast.success("Profile setup unsuccessful!");
+                toast.error("Profile setup unsuccessful!");
                 navigate("/profile");
             }
         } catch (error) {
@@ -161,15 +147,6 @@ const Profile = () => {
                             className="w-full p-3 rounded-md border border-gray-300 focus:ring-2 focus:ring-gray-500"
                             placeholder="Current City"
                             required
-                        />
-                    </div>
-
-                    <div className="space-y-2">
-                        <label className="block text-sm text-gray-800">Profile Picture</label>
-                        <input
-                            type="file"
-                            onChange={handleFileChange}
-                            className="w-full p-3 rounded-md border border-gray-300 focus:ring-2 focus:ring-gray-500"
                         />
                     </div>
 

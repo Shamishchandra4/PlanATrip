@@ -6,40 +6,40 @@ import { useNavigate } from 'react-router-dom';
 const ExploreChatRooms = () => {
   const navigate = useNavigate();
   const jwt = localStorage.getItem('jwt')
-  const [chatRooms, setChatRooms] = useState([
-    {
-      chatId: 3,
-      chatroomTitle: 'Planning for Goa',
-      chatroomDesc: 'I want help with planning my trip to Goa',
-      location: 'Goa',
-      likes: 0
-    },
-    {
-      chatId: 4,
-      chatroomTitle: 'Planning for Mumbai',
-      chatroomDesc: 'I want help with planning my trip to Mumbai',
-      location: 'Mumbai',
-      likes: 0
-    }
-  ]);
+  const [chatRooms, setChatRooms] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
+    // const fetchChatRooms = async () => {
+    //   try {
+    //     const response = await apiClient.get('/all-chats', {
+    //       headers: {
+    //         Authorization: 'Bearer ' + localStorage.getItem('jwt')
+    //       }
+    //     }
+    //     );
+    //     setChatRooms(response.data);
+    //   } catch (error) {
+    //     console.error('Error fetching chat rooms:', error);
+    //     toast.error('Failed to load chat rooms.');
+    //   }
+    // };
     const fetchChatRooms = async () => {
       try {
+        const token = localStorage.getItem('jwt');
         const response = await apiClient.get('/all-chats', {
           headers: {
-            authorization: 'Bearer ' + localStorage.getItem('jwt')
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
           }
-        }
-        );
+        });
         setChatRooms(response.data);
       } catch (error) {
         console.error('Error fetching chat rooms:', error);
         toast.error('Failed to load chat rooms.');
       }
     };
-
+    
     fetchChatRooms();
   }, []);
 
