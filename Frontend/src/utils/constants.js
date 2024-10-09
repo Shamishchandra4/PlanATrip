@@ -5,3 +5,4 @@ export const SIGNUP_ROUTE="/register"
 export const LOGIN_ROUTE="/login"
 export const SET_PROFILE=`/profile`
 export const Itinerary=`/itinerary`
+export const eventss=`/events`

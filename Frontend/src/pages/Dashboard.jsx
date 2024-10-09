@@ -7,11 +7,13 @@ import login from "../assets/login.jpg"
 import { Itinerary } from '@/utils/constants';
 import { toast, Toaster } from "sonner";
 import { useNavigate } from "react-router-dom";
+import { apiClient } from '@/lib/api-client';
 import LiveLocalEvents from '@/components/parts/LiveLocalEvents';
 import RewardsCard from '@/components/parts/RewardsCard';
 
 
 const Dashboard = () => {
+    const token =localStorage.getItem('jwt')
     const navigate=useNavigate()
     const preferences = [
         { value: "adventure", label: "Adventure" },
@@ -42,17 +44,24 @@ const Dashboard = () => {
     
     const handleItinerary = async () => {
         try {
-            const response = await apiClient.post(Itinerary, itineraryData, { withCredentials: true });
-            console.log(response);
-            if (response.status === 201) {
-                navigate("/itinerary-response")
-            }
+            const response = await apiClient.post(Itinerary, itineraryData, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
     
+            console.log(response);
+            if (response.status === 200) {
+                const itineraryString = response.data; // Adjust this based on the actual response structure
+                localStorage.setItem("i",itineraryString)
+                navigate("/itinerary-response");
+            }
         } catch (error) {
             console.log("Error during itinerary creation:", error);
             toast.error("Itinerary creation failed!");
         }
     };
+    
     
 
 
@@ -84,6 +93,15 @@ const Dashboard = () => {
             [id]: value,
         }));
     };
+    const handleMyChats = () => {
+        navigate("/my-chats")
+    }
+    const handleLogout = () => {
+        // Clear all localStorage items
+        localStorage.clear();
+        // Navigate to the home page
+        navigate('/auth');
+    };
     let User=localStorage.getItem("name")
 
 
@@ -103,15 +121,20 @@ const Dashboard = () => {
                 </div>
 
                 <nav className="space-x-6 text-lg poppins-medium">
-                    <Link to="/chat-rooms" className="hover:text-gray-400">Chat Rooms</Link>
-                    <Link to="/local-experiences" className="hover:text-gray-400">Local Experiences</Link>
+                    <Link to="/explore-chat-rooms" className="hover:text-gray-400">Chat Rooms</Link>
+                    <Link to="/local" className="hover:text-gray-400">Local Experiences</Link>
                     <Link to="/itinerary" className="hover:text-gray-400">Smart Itinerary</Link>
                     <Link to="/rewards" className="hover:text-gray-400">Rewards</Link>
                     <Link to="/events" className="hover:text-gray-400">Live Local Events</Link>
                     <Link to="/locals" className="hover:text-gray-400">Meet Locals</Link>
                     <Link to="/profile" className="hover:text-gray-400">My Profile</Link>
                 </nav>
-
+                <button
+                    onClick={handleLogout}
+                    className="hover:text-gray-400 text-sm ml-3 border-2 border-white rounded-md p-2 "
+                >
+                    Logout
+                </button>
 
             </header>
 
@@ -135,9 +158,14 @@ const Dashboard = () => {
                             ))}
                         </div>
                         <Link to="/explore-chat-rooms" className="text-blue-500 hover:underline mt-4 block">Explore More Chat Rooms</Link>
-                        <button onClick={handleCreate} className="bg-white text-black mt-10 font-bold py-3 px-6 rounded-lg hover:bg-gray-400 transition">
-                                Create a chat room
-                            </button>
+                        <div className='flex flex-col gap-5 text-xl'>
+                        <button onClick={handleCreate} className="bg-white/90 text-black mt-10 font-bold py-3 px-6 rounded-lg hover:bg-gray-400 transition">
+                            Create a chat room
+                        </button>
+                        <button onClick={handleMyChats} className="bg-white/90 text-black mt-10 font-bold py-3 px-6 rounded-lg hover:bg-gray-400 transition">
+                            Get My chat room
+                        </button>
+                        </div>
                     </div>
 
 

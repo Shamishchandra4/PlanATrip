@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const CreateChatRoom = () => {
-  const navigate=useNavigate()
+  const navigate = useNavigate();
   const [chatroomTitle, setChatroomTitle] = useState('');
   const [chatroomDesc, setChatroomDesc] = useState(''); 
   const [roomDestination, setRoomDestination] = useState('');
@@ -17,15 +18,27 @@ const CreateChatRoom = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post('http:localhost:8080/create-chat', { username:username, chatroomTitle:chatroomTitle, chatroomDesc:chatroomDesc, location: roomDestination }, {
+      const response = await axios.post('http://localhost:8080/create-chat', {
+        username: username,
+        chatroomTitle: chatroomTitle,
+        chatroomDesc: chatroomDesc,
+        location: roomDestination
+      }, {
         headers: {
           authorization: 'Bearer ' + localStorage.getItem('jwt')
         }
       });
-      setMessage(`Chat room "${chatroomTitle}" with destination "${roomDestination}" created successfully by "${username}"!`);
-      navigate("/explore-chat-rooms")
+      
+      if (response.status === 200) {
+        toast.success(`Chat room "${chatroomTitle}" with destination "${roomDestination}" created successfully by "${username}"!`);
+        navigate("/explore-chat-rooms");
+      } else {
+        toast.error("Failed to create chat room.");
+      }
+
     } catch (error) {
-      setMessage('Error creating chat room. Please try again.');
+      const errorMessage = error.response ? error.response.data.message : 'Error creating chat room. Please try again.';
+      toast.error(errorMessage);
     } finally {
       setLoading(false);
       setChatroomTitle('');
@@ -89,7 +102,7 @@ const CreateChatRoom = () => {
             {loading ? 'Creating...' : 'Create Room'}
           </button>
         </form>
-        {message && <p className="mt-4 text-center text-sm">{message}</p>}
+        {message && <p className="mt-4 text-center text-sm text-red-500">{message}</p>}
       </div>
     </div>
   );

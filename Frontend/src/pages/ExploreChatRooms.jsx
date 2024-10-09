@@ -70,7 +70,7 @@ const ExploreChatRooms = () => {
       </div>
 
       {/* Chat Rooms Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 poppins-semibold">
+      {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 poppins-semibold">
         {filteredChatRooms.length > 0 ? (
           filteredChatRooms.map(room => (
             <div key={room.chatId} className="bg-[#626469] p-4 rounded-lg shadow-lg">
@@ -87,7 +87,30 @@ const ExploreChatRooms = () => {
         ) : (
           <p className="text-gray-400">No chat rooms found.</p>
         )}
+      </div> */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 poppins-semibold p-6">
+  {filteredChatRooms.length > 0 ? (
+    filteredChatRooms.map((room) => (
+      <div
+        key={room.chatId}
+        className="bg-[#2A2A2E] p-6 rounded-xl shadow-xl transition-transform transform hover:scale-105 hover:shadow-2xl"
+      >
+        <h2 className="text-2xl font-bold text-white mb-2">{room.chatroomTitle}</h2>
+        <p className="text-gray-300 mb-6">{room.chatroomDesc}</p>
+        <div className="flex justify-end">
+          <button
+            className="px-5 py-2 bg-gradient-to-r from-blue-500 to-teal-400 text-white rounded-full shadow-lg hover:from-blue-600 hover:to-teal-500 transition-transform transform hover:scale-105"
+            onClick={() => handleJoinRoom(room.chatId)}
+          >
+            Join Room
+          </button>
+        </div>
       </div>
+    ))
+  ) : (
+    <p className="text-gray-400 text-center col-span-full">No chat rooms found.</p>
+  )}
+</div>
     </div>
   );
 };

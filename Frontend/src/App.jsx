@@ -9,6 +9,7 @@ import ItineraryResponse from './pages/ItineraryResponse'
 import ExploreChatRooms from './pages/ExploreChatRooms'
 import Chatrooms from './pages/Chatroom'
 import CreateChatRoom from './pages/CreateChatRoom'
+import MyChats from './pages/MyChats'
 {window.global = window;}
 
 function App() {
@@ -25,8 +26,9 @@ function App() {
           <Route path='/chat-room' element={<Chatrooms/>} />
           <Route path='/explore-chat-rooms' element={<ExploreChatRooms/>} />
           <Route path='/create-chat-room' element={<CreateChatRoom/>} />
+          <Route path='/my-chats' element={<MyChats/>} />
 
-          <Route path='*' element={<Navigate to="/auth" />} />
+          <Route path='*' element={<Navigate to="/dashboard" />} />
 
         </Routes>
       </BrowserRouter>

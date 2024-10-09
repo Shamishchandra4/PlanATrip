@@ -103,7 +103,7 @@ const Auth = () => {
                     <div className="flex flex-col gap-6 items-center justify-center p-8">
                         <div className="flex flex-col justify-center items-center gap-10">
                             <div className="flex items-center justify-center gap-5">
-                                <h1 className="text-4xl md:text-5xl xl:text-6xl poppins-semibold text-center font-extrabold text-gray-800">Welcome To TravelEazy</h1>
+                                <h1 className="text-4xl md:text-5xl xl:text-6xl poppins-semibold text-center font-extrabold text-gray-800">Welcome To Take A Trip</h1>
                             </div>
                             <div className="font-bold text-xl text-center text-gray-600">
                                 Join us today by entering your details! Sign up now and travel with eaze.

@@ -2,21 +2,16 @@ import { Link } from 'react-router-dom';  // Import Link from react-router-dom
 
 const RewardsCard = () => {
     const topUsers = [
-        { id: 1, name: "John Doe", points: 1500 },
-        { id: 2, name: "Jane Smith", points: 1450 },
-        { id: 3, name: "Emily Johnson", points: 1400 },
-        { id: 4, name: "Michael Brown", points: 1380 },
-        { id: 5, name: "Sarah Williams", points: 1350 },
-        { id: 6, name: "David Miller", points: 1320 },
-        { id: 7, name: "Sophia Wilson", points: 1300 },
-        { id: 8, name: "James Davis", points: 1280 },
-        { id: 9, name: "Olivia Garcia", points: 1250 },
-        { id: 10, name: "Isabella Martinez", points: 1200 },
+        { id: 1, name: "Rohit", points: 1500 },
+        { id: 2, name: "Ram", points: 1450 },
+        { id: 3, name: "Surya", points: 1400 },
+        { id: 4, name: "Priyanka Brown", points: 1380 },
+        { id: 5, name: "Sarah", points: 1350 },
     ];
 
     return (
         <div className="bg-[#1f1f1f] p-6 rounded-lg">
-            <h2 className="text-2xl font-bold mb-4 text-white">Top 10 Contributers</h2>
+            <h2 className="text-2xl font-bold mb-4 text-white">Top 5 Contributers</h2>
             <p className="text-gray-400 mb-6">Here are the top users with the most upvote points for sharing their travel experiences:</p>
 
             <ul className="space-y-4">
